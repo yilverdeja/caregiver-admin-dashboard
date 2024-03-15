@@ -11,6 +11,10 @@ export interface Shift {
 	role: 'EN' | 'ST' | 'PWH';
 }
 
-const useShifts = () => ({ data: shifts, isLoading: false, error: null });
+const useShifts = () => ({
+	data: shifts as Shift[],
+	isLoading: false,
+	error: null,
+});
 
 export default useShifts;

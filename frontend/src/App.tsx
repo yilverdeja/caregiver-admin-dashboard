@@ -1,16 +1,15 @@
+import { useState } from 'react';
 import LegendIndicator from './components/LegendIndicator';
 import SearchCaregiver from './components/SearchCaregiver';
+import ShiftsView from './components/ShiftsView';
 
 function App() {
+	const [searchText, setSearchText] = useState('');
 	return (
 		<>
 			<LegendIndicator />
-			<SearchCaregiver
-				onSearch={(searchText) => {
-					console.log(searchText);
-				}}
-			/>
-			{/* Month Cards */}
+			<SearchCaregiver onSearch={(text) => setSearchText(text)} />
+			<ShiftsView searchText={searchText} />
 		</>
 	);
 }
