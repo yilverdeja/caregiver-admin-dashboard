@@ -1,10 +1,15 @@
 import LegendIndicator from './components/LegendIndicator';
+import SearchCaregiver from './components/SearchCaregiver';
 
 function App() {
 	return (
 		<>
 			<LegendIndicator />
-			{/* Search Bar */}
+			<SearchCaregiver
+				onSearch={(searchText) => {
+					console.log(searchText);
+				}}
+			/>
 			{/* Month Cards */}
 		</>
 	);
