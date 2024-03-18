@@ -3,6 +3,7 @@ import { Shift } from '../store';
 import ShiftSelectionContext from '../contexts/ShiftSelectionContext';
 import StatusButton from './StatusButton';
 import ShiftRole from './ShiftRole';
+import Checkbox from './Checkbox';
 
 interface Props {
 	shift: Shift;
@@ -15,13 +16,12 @@ const ShiftCard = ({ shift, onUpdateStatus }: Props) => {
 
 	return (
 		<div className="flex flex-row items-center px-2">
-			<input
-				type="checkbox"
-				className="mx-4"
-				checked={isChecked}
-				// onChange={(event) => setSelected(event.target.checked)}
-				onChange={() => toggleShift(shift.id)}
-			/>
+			<div className="mx-4">
+				<Checkbox
+					checked={isChecked}
+					onToggle={() => toggleShift(shift.id)}
+				/>
+			</div>
 			<div className="flex-grow flex flex-col my-2">
 				<p className="my-1">
 					{new Date(shift.startedAt).toLocaleString('en-US', {
