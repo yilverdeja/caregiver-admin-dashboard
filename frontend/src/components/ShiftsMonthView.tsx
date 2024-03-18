@@ -12,7 +12,7 @@ interface Props {
 export type SelectedShifts = Record<number, boolean>;
 
 const ShiftsMonthView = ({ monthKey }: Props) => {
-	const { filteredShiftsByMonthAndDay } = useShiftStore();
+	const { filteredShiftsByMonthAndDay, updateShiftStatus } = useShiftStore();
 	const [selectedShifts, setSelectedShifts] = useState<SelectedShifts>({});
 	const [isAllChecked, setAllChecked] = useState(false);
 
@@ -70,7 +70,7 @@ const ShiftsMonthView = ({ monthKey }: Props) => {
 
 	return (
 		<ShiftSelectionContext.Provider value={contextValue}>
-			<div className="flex flex-col w-full h-full rounded-md overflow-hidden flex-none sm:w-2/3 md:w-1/3">
+			<div className="flex flex-col w-full h-full rounded-md overflow-hidden flex-none sm:w-1/2 lg:w-1/3">
 				<header className="flex flex-row items-center gap-4 bg-gray-200 p-2">
 					<div className="flex flex-column items-center">
 						<Checkbox
@@ -86,7 +86,17 @@ const ShiftsMonthView = ({ monthKey }: Props) => {
 						</p>
 					</div>
 					<StatusButton
-						onClick={() => console.log('update all!')}
+						onClick={() => {
+							Object.keys(selectedShifts).forEach((shiftId) => {
+								if (selectedShifts[parseInt(shiftId)]) {
+									updateShiftStatus(
+										parseInt(shiftId),
+										'CONFIRMED'
+									);
+									setAllChecked(!isAllChecked);
+								}
+							});
+						}}
 						disabled={selectedCount === 0}
 						buttonType="CONFIRM"
 					>

@@ -126,7 +126,7 @@ export const useShiftStore = create<ShiftStore>((set, get) => ({
 					...state.shiftsByMonthAndDay[monthKey],
 					[dayKey]: state.shiftsByMonthAndDay[monthKey][dayKey].map(
 						(shift) =>
-							shift.id === shiftId
+							shift.id === shiftId && shift.status === 'PENDING'
 								? { ...shift, status: newStatus }
 								: shift
 					),
@@ -142,7 +142,7 @@ export const useShiftStore = create<ShiftStore>((set, get) => ({
 						[dayKey]: state.filteredShiftsByMonthAndDay[monthKey][
 							dayKey
 						].map((shift) =>
-							shift.id === shiftId
+							shift.id === shiftId && shift.status === 'PENDING'
 								? { ...shift, status: newStatus }
 								: shift
 						),
