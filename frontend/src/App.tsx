@@ -4,7 +4,8 @@ import ShiftsView from './components/ShiftsView';
 import { useShiftStore } from './store';
 
 function App() {
-	const { setSearchTerm } = useShiftStore();
+	const { setSearchTerm, loadShifts } = useShiftStore();
+	loadShifts();
 	return (
 		<div className="flex flex-col sm:h-screen p-4 sm:p-8 gap-4">
 			<div className="flex-none">

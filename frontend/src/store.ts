@@ -2,6 +2,8 @@ import { create } from 'zustand';
 // TODO: use immer to update states
 // import { immer } from 'zustand/middleware/immer'
 import shifts from './data/shifts';
+import APIClient from './services/api-client';
+const apiClient = new APIClient('/shifts');
 
 export interface Shift {
 	id: number; // id property to define a shift
@@ -91,6 +93,7 @@ interface ShiftStore {
 		shiftId: number,
 		status: 'DECLINED' | 'CONFIRMED' | 'PENDING'
 	) => void;
+	loadShifts: () => Promise<void>;
 }
 
 export const useShiftStore = create<ShiftStore>((set, get) => ({
@@ -99,6 +102,9 @@ export const useShiftStore = create<ShiftStore>((set, get) => ({
 	filteredShiftsByMonthAndDay: {},
 	isLoading: false,
 	error: null,
+	loadShifts: async () => {
+		apiClient.getAll({});
+	},
 	setShifts: () => {
 		const groupedShifts = groupShifts(
 			assignIdsToShifts(shifts as NoIdShifts) as Shift[]
