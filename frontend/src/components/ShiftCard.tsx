@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { Shift } from '../store';
 import ShiftSelectionContext from '../contexts/ShiftSelectionContext';
+import StatusButton from './StatusButton';
 
 interface Props {
 	shift: Shift;
@@ -38,20 +39,23 @@ const ShiftCard = ({ shift, onUpdateStatus }: Props) => {
 					<span className="flex w-3 h-3 me-3 bg-indigo-500 rounded-full"></span>
 					<p>{shift.role}</p>
 				</div>
-				<p>{shift.status}</p>
 				<div className="flex flex-row gap-2 my-1">
-					<button
-						className="bg-red-600 text-white px-2 py-1 rounded-md"
+					<StatusButton
 						onClick={() => onUpdateStatus('DECLINED')}
+						disabled={shift.status === 'DECLINED'}
+						show={shift.status === 'PENDING'}
+						buttonType="DECLINE"
 					>
-						Decline
-					</button>
-					<button
-						className="bg-green-600 text-white px-2 py-1 rounded-md"
+						{shift.status === 'PENDING' ? 'Decline' : 'Declined'}
+					</StatusButton>
+					<StatusButton
 						onClick={() => onUpdateStatus('CONFIRMED')}
+						disabled={shift.status === 'CONFIRMED'}
+						show={shift.status === 'PENDING'}
+						buttonType="CONFIRM"
 					>
-						Confirm
-					</button>
+						{shift.status === 'PENDING' ? 'Confirm' : 'Confirmed'}
+					</StatusButton>
 				</div>
 			</div>
 		</div>

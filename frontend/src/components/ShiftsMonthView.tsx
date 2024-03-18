@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useShiftStore } from '../store';
 import ShiftsDayView from './ShiftsDayView';
 import ShiftSelectionContext from '../contexts/ShiftSelectionContext';
+import StatusButton from './StatusButton';
 
 interface Props {
 	monthKey: string;
@@ -84,9 +85,13 @@ const ShiftsMonthView = ({ monthKey }: Props) => {
 							{shiftsInMonth.length === 1 ? '' : 's'})
 						</p>
 					</div>
-					<button className="bg-green-600 text-white px-2 py-1 rounded-md">
+					<StatusButton
+						onClick={() => console.log('update all!')}
+						disabled={selectedCount === 0}
+						buttonType="CONFIRM"
+					>
 						Confirm
-					</button>
+					</StatusButton>
 				</header>
 
 				<div>
