@@ -70,16 +70,16 @@ const ShiftsMonthView = ({ monthKey }: Props) => {
 
 	return (
 		<ShiftSelectionContext.Provider value={contextValue}>
-			<div className="w-full rounded-md overflow-hidden flex-none sm:w-2/3 md:w-1/3 mr-8 md:pb-4 border">
-				<header className="flex flex-row items-center gap-4 bg-gray-200 px-2 py-2">
+			<div className="flex flex-col w-full h-full rounded-md overflow-hidden flex-none sm:w-2/3 md:w-1/3">
+				<header className="flex flex-row items-center gap-4 bg-gray-200 p-2">
 					<div className="flex flex-column items-center">
 						<Checkbox
 							checked={isAllChecked}
 							onToggle={() => setAllChecked(!isAllChecked)}
 						/>
 					</div>
-					<div className="flex flex-row flex-wrap flex-grow gap-y-1 gap-x-2 items-center">
-						<h2>{monthKey}</h2>
+					<div className="flex flex-row flex-wrap flex-grow gap-y-1 gap-x-2 overflow-y-auto">
+						<h2 className="font-bold">{monthKey}</h2>
 						<p>
 							({shiftsInMonth.length} held shift
 							{shiftsInMonth.length === 1 ? '' : 's'})
@@ -94,7 +94,7 @@ const ShiftsMonthView = ({ monthKey }: Props) => {
 					</StatusButton>
 				</header>
 
-				<div>
+				<div className="overflow-auto sm:overflow-y-auto sm:h-full sm:flex-grow">
 					{sortedDays.map((dayKey) => (
 						<ShiftsDayView
 							key={dayKey}

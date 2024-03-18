@@ -6,7 +6,7 @@ interface Props {
 
 const SearchCaregiver = ({ onSearch }: Props) => {
 	return (
-		<div className="flex flex-row gap-4 justify-start items-center">
+		<div className="flex flex-col sm:flex-row whitespace-nowrap gap-4 justify-start sm:items-center">
 			<label
 				htmlFor="search"
 				className="block text-lg font-medium text-gray-800"

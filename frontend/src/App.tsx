@@ -6,11 +6,15 @@ import { useShiftStore } from './store';
 function App() {
 	const { setSearchTerm } = useShiftStore();
 	return (
-		<>
-			<LegendIndicator />
-			<SearchCaregiver onSearch={(text) => setSearchTerm(text)} />
-			<ShiftsView />
-		</>
+		<div className="flex flex-col sm:h-screen p-4 sm:p-8 gap-4">
+			<div className="flex-none">
+				<LegendIndicator />
+				<SearchCaregiver onSearch={(text) => setSearchTerm(text)} />
+			</div>
+			<div className="flex-grow overflow-hidden">
+				<ShiftsView />
+			</div>
+		</div>
 	);
 }
 
