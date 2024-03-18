@@ -20,35 +20,41 @@ type ShiftIdMap = Record<number, { monthKey: string; dayKey: string }>;
 export type GroupedShifts = Record<string, Record<string, Shift[]>>;
 
 const groupShifts = (shifts: Shift[]) => {
-	const groupByMonthAndDay = shifts.reduce((acc, shift) => {
-		const startedAtDate = new Date(shift.startedAt);
+	const groupByMonthAndDay = shifts
+		.sort(
+			(a, b) =>
+				new Date(a.startedAt).getTime() -
+				new Date(b.startedAt).getTime()
+		)
+		.reduce((acc, shift) => {
+			const startedAtDate = new Date(shift.startedAt);
 
-		// format month-year key (e.g. "November 2023")
-		const monthYearKey = startedAtDate.toLocaleString('en-US', {
-			month: 'long',
-			year: 'numeric',
-		});
+			// format month-year key (e.g. "November 2023")
+			const monthYearKey = startedAtDate.toLocaleString('en-US', {
+				month: 'long',
+				year: 'numeric',
+			});
 
-		// format day-key (e.g. "25" for 25th day of the month)
-		const dayKey = startedAtDate.toLocaleString('en-US', {
-			day: '2-digit',
-		});
+			// format day-key (e.g. "25" for 25th day of the month)
+			const dayKey = startedAtDate.toLocaleString('en-US', {
+				day: '2-digit',
+			});
 
-		// initialize month object if it doesn't exist
-		if (!acc[monthYearKey]) {
-			acc[monthYearKey] = {};
-		}
+			// initialize month object if it doesn't exist
+			if (!acc[monthYearKey]) {
+				acc[monthYearKey] = {};
+			}
 
-		// initialize day array if it doesn't exist
-		if (!acc[monthYearKey][dayKey]) {
-			acc[monthYearKey][dayKey] = [];
-		}
+			// initialize day array if it doesn't exist
+			if (!acc[monthYearKey][dayKey]) {
+				acc[monthYearKey][dayKey] = [];
+			}
 
-		// push the shift to the correct day array
-		acc[monthYearKey][dayKey].push(shift);
+			// push the shift to the correct day array
+			acc[monthYearKey][dayKey].push(shift);
 
-		return acc;
-	}, {} as GroupedShifts);
+			return acc;
+		}, {} as GroupedShifts);
 
 	return groupByMonthAndDay;
 };

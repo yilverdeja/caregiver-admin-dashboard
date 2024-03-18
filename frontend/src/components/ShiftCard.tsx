@@ -4,6 +4,7 @@ import ShiftSelectionContext from '../contexts/ShiftSelectionContext';
 import StatusButton from './StatusButton';
 import ShiftRole from './ShiftRole';
 import Checkbox from './Checkbox';
+import ShiftTime from './ShiftTime';
 
 interface Props {
 	shift: Shift;
@@ -23,15 +24,11 @@ const ShiftCard = ({ shift, onUpdateStatus }: Props) => {
 				/>
 			</div>
 			<div className="flex-grow flex flex-col my-2">
-				<p className="my-1">
-					{new Date(shift.startedAt).toLocaleString('en-US', {
-						timeStyle: 'short',
-					})}
-					-
-					{new Date(shift.endedAt).toLocaleString('en-US', {
-						timeStyle: 'short',
-					})}
-				</p>
+				<ShiftTime
+					start={shift.startedAt}
+					end={shift.endedAt}
+					roundTo5Mins={true}
+				/>
 				<p className="my-1">
 					{shift.userId} - {shift.lastName} {shift.firstName}{' '}
 					{shift.chiName}

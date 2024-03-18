@@ -8,9 +8,8 @@ const ShiftsView = () => {
 		setShifts();
 	}, [setShifts]);
 
-	const sortedMonths = Object.keys(shiftsByMonthAndDay).sort(
-		(a, b) => new Date(a).getTime() - new Date(b).getTime()
-	);
+	const sortedMonths = Object.keys(shiftsByMonthAndDay);
+
 	return (
 		<div className="flex flex-col sm:flex-row gap-4 overflow-y-auto h-full">
 			{sortedMonths.map((monthKey) => (

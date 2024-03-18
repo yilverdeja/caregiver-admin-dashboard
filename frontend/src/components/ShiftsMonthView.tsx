@@ -43,9 +43,7 @@ const ShiftsMonthView = ({ monthKey }: Props) => {
 		return null;
 	}
 
-	const sortedDays = Object.keys(filteredShiftsByMonthAndDay[monthKey]).sort(
-		(a, b) => new Date(a).getTime() - new Date(b).getTime()
-	);
+	const sortedDays = Object.keys(filteredShiftsByMonthAndDay[monthKey]);
 
 	// gets the number of selected shifts
 	const selectedCount = Object.keys(selectedShifts).reduce(
