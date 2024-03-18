@@ -4,9 +4,10 @@ import ShiftSelectionContext from '../contexts/ShiftSelectionContext';
 
 interface Props {
 	shift: Shift;
+	onUpdateStatus: (status: 'DECLINED' | 'CONFIRMED' | 'PENDING') => void;
 }
 
-const ShiftCard = ({ shift }: Props) => {
+const ShiftCard = ({ shift, onUpdateStatus }: Props) => {
 	const { selectedShifts, toggleShift } = useContext(ShiftSelectionContext);
 	const isChecked = selectedShifts[shift.id] || false;
 
@@ -37,11 +38,18 @@ const ShiftCard = ({ shift }: Props) => {
 					<span className="flex w-3 h-3 me-3 bg-indigo-500 rounded-full"></span>
 					<p>{shift.role}</p>
 				</div>
+				<p>{shift.status}</p>
 				<div className="flex flex-row gap-2 my-1">
-					<button className="bg-red-600 text-white px-2 py-1 rounded-md">
+					<button
+						className="bg-red-600 text-white px-2 py-1 rounded-md"
+						onClick={() => onUpdateStatus('DECLINED')}
+					>
 						Decline
 					</button>
-					<button className="bg-green-600 text-white px-2 py-1 rounded-md">
+					<button
+						className="bg-green-600 text-white px-2 py-1 rounded-md"
+						onClick={() => onUpdateStatus('CONFIRMED')}
+					>
 						Confirm
 					</button>
 				</div>

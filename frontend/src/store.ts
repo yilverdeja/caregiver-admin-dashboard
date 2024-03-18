@@ -1,4 +1,6 @@
 import { create } from 'zustand';
+// TODO: use immer to update states
+// import { immer } from 'zustand/middleware/immer'
 import shifts from './data/shifts';
 
 export interface Shift {
@@ -79,6 +81,10 @@ interface ShiftStore {
 	setSearchTerm: (term: string) => void;
 	filteredShiftsByMonthAndDay: GroupedShifts;
 	setShifts: () => void;
+	updateShiftStatus: (
+		shiftId: number,
+		status: 'DECLINED' | 'CONFIRMED' | 'PENDING'
+	) => void;
 }
 
 export const useShiftStore = create<ShiftStore>((set, get) => ({
@@ -98,10 +104,58 @@ export const useShiftStore = create<ShiftStore>((set, get) => ({
 		});
 	},
 	searchTerm: '',
-	setSearchTerm: (term: string) => {
+	setSearchTerm: (term) => {
 		set({ searchTerm: term });
 		const filtered = filterGroupedShifts(term, get().shiftsByMonthAndDay);
 		set({ filteredShiftsByMonthAndDay: filtered });
+	},
+	updateShiftStatus: (shiftId, newStatus) => {
+		set((state) => {
+			const idMap = state.shiftIdToMonthDayMap;
+			if (!(shiftId in idMap)) {
+				// return the current state if shiftId is not found
+				return { ...state };
+			}
+
+			const { monthKey, dayKey } = idMap[shiftId];
+
+			// update the status in the groupedShifts
+			const updatedGroupedShifts = {
+				...state.shiftsByMonthAndDay,
+				[monthKey]: {
+					...state.shiftsByMonthAndDay[monthKey],
+					[dayKey]: state.shiftsByMonthAndDay[monthKey][dayKey].map(
+						(shift) =>
+							shift.id === shiftId
+								? { ...shift, status: newStatus }
+								: shift
+					),
+				},
+			};
+
+			// update the filtered GroupedShifts if they exist
+			const updatedFilteredGroupedShifts =
+				state.filteredShiftsByMonthAndDay && {
+					...state.filteredShiftsByMonthAndDay,
+					[monthKey]: {
+						...state.filteredShiftsByMonthAndDay[monthKey],
+						[dayKey]: state.filteredShiftsByMonthAndDay[monthKey][
+							dayKey
+						].map((shift) =>
+							shift.id === shiftId
+								? { ...shift, status: newStatus }
+								: shift
+						),
+					},
+				};
+
+			return {
+				shiftsByMonthAndDay: updatedGroupedShifts,
+				filteredShiftsByMonthAndDay:
+					updatedFilteredGroupedShifts ||
+					state.filteredShiftsByMonthAndDay,
+			};
+		});
 	},
 }));
 

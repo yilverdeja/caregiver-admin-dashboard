@@ -8,7 +8,7 @@ interface Props {
 }
 
 function ShiftsDayView({ monthKey, dayKey }: Props) {
-	const { filteredShiftsByMonthAndDay } = useShiftStore();
+	const { filteredShiftsByMonthAndDay, updateShiftStatus } = useShiftStore();
 	const shifts = filteredShiftsByMonthAndDay[monthKey][dayKey];
 
 	if (!shifts || shifts.length === 0) {
@@ -20,7 +20,13 @@ function ShiftsDayView({ monthKey, dayKey }: Props) {
 		<div>
 			<ShiftDate name={dayKey + ' ' + monthKey} />
 			{shifts.map((shift) => (
-				<ShiftCard key={shift.id} shift={shift} />
+				<ShiftCard
+					key={shift.id}
+					shift={shift}
+					onUpdateStatus={(status) => {
+						updateShiftStatus(shift.id, status);
+					}}
+				/>
 			))}
 		</div>
 	);
