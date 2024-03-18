@@ -1,13 +1,24 @@
-import { Shift } from '../hooks/useShifts';
+import { useContext } from 'react';
+import { Shift } from '../store';
+import ShiftSelectionContext from '../contexts/ShiftSelectionContext';
 
 interface Props {
 	shift: Shift;
 }
 
 const ShiftCard = ({ shift }: Props) => {
+	const { selectedShifts, toggleShift } = useContext(ShiftSelectionContext);
+	const isChecked = selectedShifts[shift.id] || false;
+
 	return (
 		<div className="flex flex-row items-center px-2">
-			<input type="checkbox" className="mx-4" />
+			<input
+				type="checkbox"
+				className="mx-4"
+				checked={isChecked}
+				// onChange={(event) => setSelected(event.target.checked)}
+				onChange={() => toggleShift(shift.id)}
+			/>
 			<div className="flex-grow flex flex-col my-2">
 				<p className="my-1">
 					{new Date(shift.startedAt).toLocaleString('en-US', {
