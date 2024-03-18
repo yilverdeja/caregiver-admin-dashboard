@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import { Shift } from '../store';
 import ShiftSelectionContext from '../contexts/ShiftSelectionContext';
 import StatusButton from './StatusButton';
+import ShiftRole from './ShiftRole';
 
 interface Props {
 	shift: Shift;
@@ -35,10 +36,7 @@ const ShiftCard = ({ shift, onUpdateStatus }: Props) => {
 					{shift.userId} - {shift.lastName} {shift.firstName}{' '}
 					{shift.chiName}
 				</p>
-				<div className="flex flex-row gap-1 items-center my-1">
-					<span className="flex w-3 h-3 me-3 bg-indigo-500 rounded-full"></span>
-					<p>{shift.role}</p>
-				</div>
+				<ShiftRole role={shift.role} />
 				<div className="flex flex-row gap-2 my-1">
 					<StatusButton
 						onClick={() => onUpdateStatus('DECLINED')}
