@@ -2,11 +2,7 @@ import ShiftsMonthView from './ShiftsMonthView';
 import { useShiftStore } from '../store';
 import { useEffect } from 'react';
 
-interface Props {
-	searchText: string;
-}
-
-const ShiftsView = ({ searchText }: Props) => {
+const ShiftsView = () => {
 	// const { data, isLoading, error } = useShifts();
 	const { shiftsByMonthAndDay, setShifts } = useShiftStore();
 	useEffect(() => {

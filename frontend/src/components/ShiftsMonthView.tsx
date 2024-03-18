@@ -10,23 +10,23 @@ interface Props {
 export type SelectedShifts = Record<number, boolean>;
 
 const ShiftsMonthView = ({ monthKey }: Props) => {
-	const { shiftsByMonthAndDay } = useShiftStore();
+	const { filteredShiftsByMonthAndDay } = useShiftStore();
 	const [selectedShifts, setSelectedShifts] = useState<SelectedShifts>({});
 	const [isAllChecked, setAllChecked] = useState(false);
 
 	const shiftsInMonth = useMemo(() => {
-		return Object.keys(shiftsByMonthAndDay[monthKey]).reduce(
+		return Object.keys(filteredShiftsByMonthAndDay[monthKey]).reduce(
 			(acc, dayKey) => {
 				return [
 					...acc,
-					...shiftsByMonthAndDay[monthKey][dayKey].map(
+					...filteredShiftsByMonthAndDay[monthKey][dayKey].map(
 						(shift) => shift.id
 					),
 				];
 			},
 			[] as number[]
 		);
-	}, [monthKey, shiftsByMonthAndDay]);
+	}, [monthKey, filteredShiftsByMonthAndDay]);
 
 	useEffect(() => {
 		const newSelectedShifts: SelectedShifts = {};
@@ -36,12 +36,12 @@ const ShiftsMonthView = ({ monthKey }: Props) => {
 		setSelectedShifts(newSelectedShifts);
 	}, [isAllChecked, shiftsInMonth]);
 
-	if (!shiftsByMonthAndDay[monthKey]) {
+	if (!filteredShiftsByMonthAndDay[monthKey] || shiftsInMonth.length === 0) {
 		// no shifts in a given month
 		return null;
 	}
 
-	const sortedDays = Object.keys(shiftsByMonthAndDay[monthKey]).sort(
+	const sortedDays = Object.keys(filteredShiftsByMonthAndDay[monthKey]).sort(
 		(a, b) => new Date(a).getTime() - new Date(b).getTime()
 	);
 

@@ -75,12 +75,16 @@ interface ShiftStore {
 	shiftIdToMonthDayMap: ShiftIdMap;
 	isLoading: boolean;
 	error: string | null;
+	searchTerm: string;
+	setSearchTerm: (term: string) => void;
+	filteredShiftsByMonthAndDay: GroupedShifts;
 	setShifts: () => void;
 }
 
-export const useShiftStore = create<ShiftStore>((set) => ({
+export const useShiftStore = create<ShiftStore>((set, get) => ({
 	shiftsByMonthAndDay: {},
 	shiftIdToMonthDayMap: {},
+	filteredShiftsByMonthAndDay: {},
 	isLoading: false,
 	error: null,
 	setShifts: () => {
@@ -89,9 +93,39 @@ export const useShiftStore = create<ShiftStore>((set) => ({
 		);
 		set({
 			shiftsByMonthAndDay: groupedShifts,
-		});
-		set({
+			filteredShiftsByMonthAndDay: groupedShifts,
 			shiftIdToMonthDayMap: createShiftIdMap(groupedShifts),
 		});
 	},
+	searchTerm: '',
+	setSearchTerm: (term: string) => {
+		set({ searchTerm: term });
+		const filtered = filterGroupedShifts(term, get().shiftsByMonthAndDay);
+		set({ filteredShiftsByMonthAndDay: filtered });
+	},
 }));
+
+const filterGroupedShifts = (
+	searchTerm: string,
+	groupedShifts: GroupedShifts
+): GroupedShifts => {
+	const filtered: GroupedShifts = {};
+	for (const monthKey in groupedShifts) {
+		filtered[monthKey] = {};
+		for (const dayKey in groupedShifts[monthKey]) {
+			const shifts = groupedShifts[monthKey][dayKey];
+			filtered[monthKey][dayKey] = shifts.filter((shift) => {
+				const shiftName =
+					shift.lastName +
+					' ' +
+					shift.firstName +
+					' ' +
+					shift.chiName;
+				return shiftName
+					.toLowerCase()
+					.includes(searchTerm.toLowerCase());
+			});
+		}
+	}
+	return filtered;
+};

@@ -8,8 +8,8 @@ interface Props {
 }
 
 function ShiftsDayView({ monthKey, dayKey }: Props) {
-	const { shiftsByMonthAndDay } = useShiftStore();
-	const shifts = shiftsByMonthAndDay[monthKey][dayKey];
+	const { filteredShiftsByMonthAndDay } = useShiftStore();
+	const shifts = filteredShiftsByMonthAndDay[monthKey][dayKey];
 
 	if (!shifts || shifts.length === 0) {
 		// Handle scenario where there are no shifts for the given day
