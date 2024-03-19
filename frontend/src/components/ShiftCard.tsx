@@ -5,6 +5,7 @@ import StatusButton from './StatusButton';
 import ShiftRole from './ShiftRole';
 import Checkbox from './Checkbox';
 import ShiftTime from './ShiftTime';
+import ShiftRelease from './ShiftRelease';
 
 interface Props {
 	shift: Shift;
@@ -25,6 +26,9 @@ const ShiftCard = ({ shift, onUpdateStatus }: Props) => {
 				/>
 			</div>
 			<div className="flex-grow flex flex-col my-2">
+				{shift.status === 'PENDING' && (
+					<ShiftRelease start={shift.startedAt} />
+				)}
 				<ShiftTime
 					start={shift.startedAt}
 					end={shift.endedAt}
