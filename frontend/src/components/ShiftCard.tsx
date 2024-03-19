@@ -21,6 +21,7 @@ const ShiftCard = ({ shift, onUpdateStatus }: Props) => {
 				<Checkbox
 					checked={isChecked}
 					onToggle={() => toggleShift(shift.id)}
+					disabled={shift.status !== 'PENDING'}
 				/>
 			</div>
 			<div className="flex-grow flex flex-col my-2">

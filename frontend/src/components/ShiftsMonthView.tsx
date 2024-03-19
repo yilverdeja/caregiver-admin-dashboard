@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useShiftStore } from '../store';
+import { Shift, useShiftStore } from '../store';
 import ShiftsDayView from './ShiftsDayView';
 import ShiftSelectionContext from '../contexts/ShiftSelectionContext';
 import StatusButton from './StatusButton';
@@ -22,18 +22,19 @@ const ShiftsMonthView = ({ monthKey }: Props) => {
 				return [
 					...acc,
 					...filteredShiftsByMonthAndDay[monthKey][dayKey].map(
-						(shift) => shift.id
+						(shift) => shift
 					),
 				];
 			},
-			[] as number[]
+			[] as Shift[]
 		);
 	}, [monthKey, filteredShiftsByMonthAndDay]);
 
 	useEffect(() => {
 		const newSelectedShifts: SelectedShifts = {};
-		for (const id of shiftsInMonth) {
-			newSelectedShifts[id] = isAllChecked;
+		for (const shift of shiftsInMonth) {
+			newSelectedShifts[shift.id] =
+				isAllChecked && shift.status === 'PENDING';
 		}
 		setSelectedShifts(newSelectedShifts);
 	}, [isAllChecked, shiftsInMonth]);

@@ -103,6 +103,7 @@ export const useShiftStore = create<ShiftStore>((set, get) => ({
 	isLoading: false,
 	error: null,
 	loadShifts: async () => {
+		// TODO: load shifts and handle
 		apiClient.getAll({});
 	},
 	setShifts: () => {
