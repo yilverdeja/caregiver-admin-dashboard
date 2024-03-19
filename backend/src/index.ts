@@ -48,11 +48,27 @@ app.patch('/api/shifts/:id', (req, res) => {
 	const { id } = req.params;
 	const { status } = req.body;
 
+	// check if the new status if one of the allowed values
+	const allowedStatuses = ['CONFIRMED', 'DECLINED'];
+	if (!allowedStatuses.includes(status)) {
+		return res.status(400).json({ message: 'Invalid status value' });
+	}
+
+	// check if the shift exists
 	const shift = shifts.find((shift) => shift?.id?.toString() === id);
 	if (!shift) {
 		return res.status(404).json({ message: 'Shift not found' });
 	}
 
+	// ensures that the current status is "PENDING" before it is updated to the allowed status
+	if (shift.status !== 'PENDING') {
+		return res.status(409).json({
+			message:
+				'Shift status is not PENDING therefore status update is not allowed',
+		});
+	}
+
+	// update status
 	shift.status = status;
 	res.json(shift);
 });
