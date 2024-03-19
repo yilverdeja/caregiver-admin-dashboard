@@ -4,28 +4,42 @@ const axiosInstance = axios.create({
 	baseURL: 'http://localhost:5001/api',
 });
 
-class APIClient {
+class APIClient<T> {
 	endpoint: string;
 
 	constructor(endpoint: string) {
 		this.endpoint = endpoint;
 	}
 
-	getAll = (config: AxiosRequestConfig) => {
+	getAllShifts = (config: AxiosRequestConfig) => {
 		return axiosInstance
-			.get(this.endpoint, config)
-			.then((res) => console.log(res.data));
+			.get<T[]>(this.endpoint, config)
+			.then((res) => res.data);
 	};
 
-	get = (id: number) => {
+	getShift = (id: number) => {
 		return axiosInstance
-			.get(this.endpoint + '/' + id)
-			.then((res) => console.log(res.data));
+			.get<T>(this.endpoint + '/' + id)
+			.then((res) => res.data);
 	};
 
-	// TODO: update status of single id
+	updateShiftStatus = (
+		id: number,
+		status: 'CONFIRMED' | 'PENDING' | 'DECLINE'
+	) => {
+		return axiosInstance
+			.patch<T>(this.endpoint + '/' + id, { status })
+			.then((res) => res.data);
+	};
 
-	// TODO: update status of multiple ids
+	confirmShifts = (ids: number[]) => {
+		return axiosInstance
+			.patch<T[]>(this.endpoint, {
+				ids,
+				status: 'CONFIRMED',
+			})
+			.then((res) => res.data);
+	};
 }
 
 export default APIClient;

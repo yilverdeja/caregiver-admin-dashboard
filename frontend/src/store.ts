@@ -1,9 +1,6 @@
 import { create } from 'zustand';
 // TODO: use immer to update states
 // import { immer } from 'zustand/middleware/immer'
-import shifts from './data/shifts';
-import APIClient from './services/api-client';
-const apiClient = new APIClient('/shifts');
 
 export interface Shift {
 	id: number; // id property to define a shift
@@ -17,7 +14,6 @@ export interface Shift {
 	role: 'EN' | 'ST' | 'PWH';
 }
 
-type NoIdShifts = Omit<Shift, 'id'>[];
 type ShiftIdMap = Record<number, { monthKey: string; dayKey: string }>;
 export type GroupedShifts = Record<string, Record<string, Shift[]>>;
 
@@ -61,10 +57,6 @@ const groupShifts = (shifts: Shift[]) => {
 	return groupByMonthAndDay;
 };
 
-const assignIdsToShifts = (shifts: NoIdShifts): Shift[] => {
-	return shifts.map((shift, index) => ({ ...shift, id: index }));
-};
-
 const createShiftIdMap = (shifts: GroupedShifts) => {
 	const shiftIdToMonthDayMap: ShiftIdMap = {};
 
@@ -88,12 +80,11 @@ interface ShiftStore {
 	searchTerm: string;
 	setSearchTerm: (term: string) => void;
 	filteredShiftsByMonthAndDay: GroupedShifts;
-	setShifts: () => void;
+	setShifts: (shifts: Shift[]) => void;
 	updateShiftStatus: (
 		shiftId: number,
 		status: 'DECLINED' | 'CONFIRMED' | 'PENDING'
 	) => void;
-	loadShifts: () => Promise<void>;
 }
 
 export const useShiftStore = create<ShiftStore>((set, get) => ({
@@ -102,14 +93,8 @@ export const useShiftStore = create<ShiftStore>((set, get) => ({
 	filteredShiftsByMonthAndDay: {},
 	isLoading: false,
 	error: null,
-	loadShifts: async () => {
-		// TODO: load shifts and handle
-		apiClient.getAll({});
-	},
-	setShifts: () => {
-		const groupedShifts = groupShifts(
-			assignIdsToShifts(shifts as NoIdShifts) as Shift[]
-		);
+	setShifts: (shifts) => {
+		const groupedShifts = groupShifts(shifts);
 		set({
 			shiftsByMonthAndDay: groupedShifts,
 			filteredShiftsByMonthAndDay: groupedShifts,

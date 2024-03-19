@@ -1,12 +1,21 @@
 import ShiftsMonthView from './ShiftsMonthView';
 import { useShiftStore } from '../store';
 import { useEffect } from 'react';
+import useShifts from '../hooks/useShifts';
 
 const ShiftsView = () => {
-	const { shiftsByMonthAndDay, setShifts } = useShiftStore();
+	const { data: shifts, isLoading, isError } = useShifts();
+	const setShifts = useShiftStore((state) => state.setShifts);
+	const { shiftsByMonthAndDay } = useShiftStore();
+
 	useEffect(() => {
-		setShifts();
-	}, [setShifts]);
+		if (shifts) {
+			setShifts(shifts);
+		}
+	}, [shifts, setShifts]);
+
+	if (isLoading) return 'Loading...';
+	if (isError) return 'Error retrieving shifts...';
 
 	const sortedMonths = Object.keys(shiftsByMonthAndDay);
 
