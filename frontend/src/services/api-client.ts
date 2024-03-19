@@ -25,7 +25,7 @@ class APIClient<T> {
 
 	updateShiftStatus = (
 		id: number,
-		status: 'CONFIRMED' | 'PENDING' | 'DECLINE'
+		status: 'CONFIRMED' | 'PENDING' | 'DECLINED'
 	) => {
 		return axiosInstance
 			.patch<T>(this.endpoint + '/' + id, { status })
