@@ -12,7 +12,8 @@ interface Props {
 export type SelectedShifts = Record<number, boolean>;
 
 const ShiftsMonthView = ({ monthKey }: Props) => {
-	const { filteredShiftsByMonthAndDay, updateShiftStatus } = useShiftStore();
+	const { filteredShiftsByMonthAndDay, confirmSelectedShiftsStatus } =
+		useShiftStore();
 	const [selectedShifts, setSelectedShifts] = useState<SelectedShifts>({});
 	const [isAllChecked, setAllChecked] = useState(false);
 
@@ -86,15 +87,13 @@ const ShiftsMonthView = ({ monthKey }: Props) => {
 					</div>
 					<StatusButton
 						onClick={() => {
-							Object.keys(selectedShifts).forEach((shiftId) => {
-								if (selectedShifts[parseInt(shiftId)]) {
-									updateShiftStatus(
-										parseInt(shiftId),
-										'CONFIRMED'
-									);
-									setAllChecked(!isAllChecked);
-								}
-							});
+							confirmSelectedShiftsStatus(
+								Object.keys(selectedShifts)
+									.filter(
+										(id) => selectedShifts[parseInt(id)]
+									)
+									.map((id) => parseInt(id))
+							);
 						}}
 						disabled={selectedCount === 0}
 					/>

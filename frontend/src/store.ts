@@ -110,6 +110,7 @@ type Actions = {
 		shiftId: number,
 		status: 'DECLINED' | 'CONFIRMED' | 'PENDING'
 	) => Promise<void>;
+	confirmSelectedShiftsStatus: (shiftIds: number[]) => Promise<void>;
 };
 
 export const useShiftStore = create<State & Actions>()(
@@ -178,6 +179,69 @@ export const useShiftStore = create<State & Actions>()(
 							}
 						});
 					}
+				});
+			} catch (error) {
+				// handle any errors
+				set((state) => {
+					if (error instanceof Error) {
+						state.error = error.message;
+					} else {
+						set((state) => {
+							state.error = 'An unexpected error occurred';
+						});
+						console.error('Caught an unexpected error:', error);
+					}
+				});
+			} finally {
+				// set isLoading to false to indicate that loading has finished
+				set((state) => {
+					state.isLoading = false;
+				});
+			}
+		},
+		confirmSelectedShiftsStatus: async (shiftIds) => {
+			set((state) => {
+				state.isLoading = true;
+			});
+
+			try {
+				// confirm the shifts on the backend
+				const response = await apiClient.confirmShifts(shiftIds);
+
+				// only update the shifts that were updated
+				const updatedShiftIds = response.data.map((shift) => shift.id);
+
+				set((state) => {
+					const idMap = state.shiftIdToMonthDayMap;
+					updatedShiftIds.forEach((shiftId) => {
+						if (shiftId in idMap) {
+							const { monthKey, dayKey } = idMap[shiftId];
+							const shifts =
+								state.shiftsByMonthAndDay[monthKey][dayKey];
+							const filteredShifts =
+								state.filteredShiftsByMonthAndDay[monthKey]?.[
+									dayKey
+								] || [];
+
+							shifts.forEach((shift) => {
+								if (
+									shift.id === shiftId &&
+									shift.status === 'PENDING'
+								) {
+									shift.status = 'CONFIRMED';
+								}
+							});
+
+							filteredShifts.forEach((shift) => {
+								if (
+									shift.id === shiftId &&
+									shift.status === 'PENDING'
+								) {
+									shift.status = 'CONFIRMED';
+								}
+							});
+						}
+					});
 				});
 			} catch (error) {
 				// handle any errors

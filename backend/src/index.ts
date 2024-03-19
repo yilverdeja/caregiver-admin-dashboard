@@ -79,28 +79,58 @@ app.patch(
 		req: Request<
 			{},
 			{},
-			{ ids: number[]; status: 'CONFIRMED' | 'PENDING' | 'DECLINED' }
+			{ ids: number[]; status: 'CONFIRMED' | 'DECLINED' }
 		>,
 		res: Response
 	) => {
 		const { ids, status } = req.body;
 
-		// TODO: handle shifts that are not pending (should not be updated, but it should update the rest and return a message ? )
-		const updatedShifts = ids
-			.map((id) => {
-				const shift = shifts.find((shift) => shift.id === id);
-				if (shift) {
-					shift.status = status;
-				}
-				return shift;
-			})
-			.filter(Boolean); // Remove undefined entries
+		let notFoundsIds: number[] = [];
+		let skippedIds: number[] = [];
+		let updatedShifts: Shift[] = [];
 
-		if (updatedShifts.length !== ids.length) {
-			return res.status(404).json({ message: 'Some shifts not found' });
+		ids.forEach((id) => {
+			const shift = shifts.find((s) => s.id === id);
+			if (!shift) {
+				notFoundsIds.push(id);
+			} else if (shift.status !== 'PENDING') {
+				skippedIds.push(id);
+			} else {
+				shift.status = status;
+				updatedShifts.push(shift);
+			}
+		});
+
+		let error: Record<string, string | number[]> = {};
+		let errorMessage = [];
+
+		if (notFoundsIds.length > 0) {
+			errorMessage.push('Some shifts were not found');
+			error['notFoundsIds'] = notFoundsIds;
+		}
+		if (skippedIds.length > 0) {
+			errorMessage.push(
+				'Some shifts were not updated due to their non-PENDING status'
+			);
+			error['skippedIds'] = skippedIds;
 		}
 
-		res.json(updatedShifts);
+		if (errorMessage.length > 0)
+			error['message'] = errorMessage.join(' & ');
+
+		// if no shifts are updated, and there are only errors return the error object with the correct error code
+		if (Object.keys(error).length > 0 && updatedShifts.length === 0) {
+			const statusCode = notFoundsIds.length === ids.length ? 404 : 409;
+			return res.status(statusCode).json({ error });
+		}
+
+		// if there are shifts with some errors, then return the updated shifts along with the error object
+		if (Object.keys(error).length > 0) {
+			return res.json({ data: updatedShifts, error });
+		}
+
+		// if there are no errors, return the updated shifts
+		res.json({ data: updatedShifts });
 	}
 );
 
