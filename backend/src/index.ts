@@ -16,10 +16,15 @@ export interface Shift {
 
 type NoIdShifts = Omit<Shift, 'id'>[];
 
-let shifts: Shift[] = (base_shifts as NoIdShifts).map((ss, index) => ({
-	...ss,
-	id: index,
-}));
+let shifts: Shift[] = (base_shifts as NoIdShifts)
+	.map((ss, index) => ({
+		...ss,
+		id: index,
+	}))
+	.sort(
+		(a, b) =>
+			new Date(a.startedAt).getTime() - new Date(b.startedAt).getTime()
+	);
 
 const app = express();
 
