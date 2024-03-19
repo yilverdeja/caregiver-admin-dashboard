@@ -1,40 +1,44 @@
-import { ReactNode } from 'react';
-
 interface Props {
-	children: ReactNode;
 	onClick: () => void;
 	disabled?: boolean;
-	show?: boolean;
-	buttonType: 'CONFIRM' | 'DECLINE';
+	buttonType?: 'CONFIRM' | 'DECLINE' | 'ALL';
+	status?: 'CONFIRMED' | 'PENDING' | 'DECLINED' | null;
 }
 
 const StatusButton = ({
-	children,
 	onClick,
 	disabled = false,
-	buttonType,
-	show = true,
+	buttonType = 'ALL',
+	status = null,
 }: Props) => {
-	if (!show && !disabled) return null;
+	const buttonText =
+		buttonType === 'CONFIRM'
+			? 'Confirm' + (disabled ? 'ed' : '')
+			: buttonType === 'DECLINE'
+			? 'Decline' + (disabled ? 'd' : '')
+			: 'Confirm';
+
+	if (status === 'CONFIRMED' && buttonType === 'DECLINE') return null;
+	if (status === 'DECLINED' && buttonType === 'CONFIRM') return null;
 
 	const baseStyle = 'px-2 py-1 rounded-md';
 	const buttonStyles = {
-		default: `${baseStyle} bg-gray-800 hover:bg-green-900 text-white`,
-		CONFIRM: `${baseStyle} bg-green-500 hover:bg-green-600 text-white`,
-		DECLINE: `${baseStyle} bg-red-500 hover:bg-red-600 text-white`,
+		ALL: `${baseStyle} bg-emerald-500 text-white border border-emerald-500 hover:bg-emerald-600 hover:border-emerald-600`,
+		CONFIRM: `${baseStyle} bg-emerald-500 text-white border border-emerald-500 hover:bg-emerald-600 hover:border-emerald-600`,
+		DECLINE: `${baseStyle} bg-transparent text-red-400 border border-red-400 font-medium`,
 	};
 
 	const disabledButtonStyles = {
-		default: `${baseStyle} bg-transparent text-gray-800 border border-gray-800`,
-		CONFIRM: `${baseStyle} bg-transparent text-green-500 border border-green-500`,
-		DECLINE: `${baseStyle} bg-transparent text-red-500 border border-red-500`,
+		ALL: `${baseStyle} bg-gray-400 text-white border border-gray-400`,
+		CONFIRM: `${baseStyle} bg-emerald-100 text-emerald-500 border border-emerald-100 font-medium`,
+		DECLINE: `${baseStyle} bg-red-100 text-red-500 border border-red-100 font-medium`,
 	};
 
 	const getButtonStyle = () => {
 		if (disabled) {
 			return disabledButtonStyles[buttonType];
 		}
-		return buttonStyles[buttonType] || buttonStyles['default'];
+		return buttonStyles[buttonType] || buttonStyles['ALL'];
 	};
 
 	return (
@@ -44,7 +48,7 @@ const StatusButton = ({
 			disabled={disabled}
 			className={getButtonStyle()}
 		>
-			{children}
+			{buttonText}
 		</button>
 	);
 };

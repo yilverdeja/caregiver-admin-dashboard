@@ -39,19 +39,15 @@ const ShiftCard = ({ shift, onUpdateStatus }: Props) => {
 					<StatusButton
 						onClick={() => onUpdateStatus('DECLINED')}
 						disabled={shift.status === 'DECLINED'}
-						show={shift.status === 'PENDING'}
 						buttonType="DECLINE"
-					>
-						{shift.status === 'PENDING' ? 'Decline' : 'Declined'}
-					</StatusButton>
+						status={shift.status}
+					/>
 					<StatusButton
 						onClick={() => onUpdateStatus('CONFIRMED')}
 						disabled={shift.status === 'CONFIRMED'}
-						show={shift.status === 'PENDING'}
 						buttonType="CONFIRM"
-					>
-						{shift.status === 'PENDING' ? 'Confirm' : 'Confirmed'}
-					</StatusButton>
+						status={shift.status}
+					/>
 				</div>
 			</div>
 		</div>

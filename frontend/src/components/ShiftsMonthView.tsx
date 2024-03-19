@@ -97,10 +97,7 @@ const ShiftsMonthView = ({ monthKey }: Props) => {
 							});
 						}}
 						disabled={selectedCount === 0}
-						buttonType="CONFIRM"
-					>
-						Confirm
-					</StatusButton>
+					/>
 				</header>
 
 				<div className="overflow-auto sm:overflow-y-auto sm:h-full sm:flex-grow">
