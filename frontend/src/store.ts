@@ -25,12 +25,14 @@ const groupShifts = (shifts: Shift[]) => {
 
 		// format month-year key (e.g. "November 2023")
 		const monthYearKey = startedAtDate.toLocaleString('en-US', {
+			timeZone: 'UTC',
 			month: 'long',
 			year: 'numeric',
 		});
 
 		// format day-key (e.g. "25" for 25th day of the month)
 		const dayKey = startedAtDate.toLocaleString('en-US', {
+			timeZone: 'UTC',
 			day: '2-digit',
 		});
 
