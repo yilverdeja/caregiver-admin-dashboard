@@ -1,7 +1,7 @@
 # Admin Dashboard
 
-<img src="https://github.com/yilverdeja/caregiver-admin-dashboard/assets/29952939/ab9b6e5f-5f28-461e-856b-d9a9651cd6a3" alt="desktop-showcase" width="auto" height="400">
-<img src="https://github.com/yilverdeja/caregiver-admin-dashboard/assets/29952939/29b52ebb-153e-476b-bf6d-2538d43eeace" alt="desktop-showcase" width="auto" height="400">
+<img src="https://github.com/yilverdeja/caregiver-admin-dashboard/assets/29952939/ab9b6e5f-5f28-461e-856b-d9a9651cd6a3" alt="desktop-showcase" width="auto" height="300">
+<img src="https://github.com/yilverdeja/caregiver-admin-dashboard/assets/29952939/29b52ebb-153e-476b-bf6d-2538d43eeace" alt="desktop-showcase" width="auto" height="300">
 
 ## About
 
@@ -97,6 +97,8 @@ This will start a web server on an availale port
 ## Known Issues
 
 ### Hardcoded Shift Release Component
+
+![image](https://github.com/yilverdeja/caregiver-admin-dashboard/assets/29952939/d776435e-bfb9-4b01-bc5b-8034a1195fe6)
 
 The shift data is based in 2023, whereas the year of developing this application is in 2024. The `ShiftRelease` component will only appear when the shift status is PENDING and there are less than 24 hours until the shift starts.
 
