@@ -1,5 +1,8 @@
 # Admin Dashboard
 
+<img src="https://github.com/yilverdeja/caregiver-admin-dashboard/assets/29952939/ab9b6e5f-5f28-461e-856b-d9a9651cd6a3" alt="desktop-showcase" width="auto" height="400">
+<img src="https://github.com/yilverdeja/caregiver-admin-dashboard/assets/29952939/29b52ebb-153e-476b-bf6d-2538d43eeace" alt="desktop-showcase" width="auto" height="400">
+
 ## About
 
 This is a mock admin panel for admins to approve or decline caregiver shifts. The major features are:
