@@ -1,5 +1,14 @@
 import axios, { AxiosRequestConfig } from 'axios';
 
+interface ShiftUpdateMultipleResponse<T> {
+	updatedShifts: T[];
+	error?: {
+		message: string;
+		notFoundIds: number[];
+		skippedIds: number[];
+	};
+}
+
 const axiosInstance = axios.create({
 	baseURL: 'http://localhost:5001/api',
 });
@@ -34,7 +43,7 @@ class APIClient<T> {
 
 	confirmShifts = (ids: number[]) => {
 		return axiosInstance
-			.patch<T[]>(this.endpoint, {
+			.patch<ShiftUpdateMultipleResponse<T>>(this.endpoint, {
 				ids,
 				status: 'CONFIRMED',
 			})

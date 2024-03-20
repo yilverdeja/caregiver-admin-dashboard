@@ -27,14 +27,15 @@ let shifts: Shift[] = (base_shifts as NoIdShifts)
 	);
 
 const app = express();
-
 app.use(express.json());
 app.use(cors());
 
+// GET all shifts
 app.get('/api/shifts', (req, res) => {
 	res.json(shifts);
 });
 
+// GET shift by ID
 app.get('/api/shifts/:id', (req, res) => {
 	const { id } = req.params;
 	const shift = shifts.find((shift) => shift?.id?.toString() === id);
@@ -44,6 +45,7 @@ app.get('/api/shifts/:id', (req, res) => {
 	res.json(shift);
 });
 
+// PATCH update shift status by ID
 app.patch('/api/shifts/:id', (req, res) => {
 	const { id } = req.params;
 	const { status } = req.body;
@@ -73,66 +75,51 @@ app.patch('/api/shifts/:id', (req, res) => {
 	res.json(shift);
 });
 
-app.patch(
-	'/api/shifts',
-	(
-		req: Request<
-			{},
-			{},
-			{ ids: number[]; status: 'CONFIRMED' | 'DECLINED' }
-		>,
-		res: Response
-	) => {
-		const { ids, status } = req.body;
+// PATCH update multiple shifts statuses by ID
+app.patch('/api/shifts', (req, res) => {
+	const { ids, status }: { ids: number[]; status: Shift['status'] } =
+		req.body;
 
-		let notFoundsIds: number[] = [];
-		let skippedIds: number[] = [];
-		let updatedShifts: Shift[] = [];
+	let updatedShifts: Shift[] = [];
+	let notFoundIds: number[] = [];
+	let skippedIds: number[] = [];
 
-		ids.forEach((id) => {
-			const shift = shifts.find((s) => s.id === id);
-			if (!shift) {
-				notFoundsIds.push(id);
-			} else if (shift.status !== 'PENDING') {
-				skippedIds.push(id);
-			} else {
-				shift.status = status;
-				updatedShifts.push(shift);
-			}
-		});
-
-		let error: Record<string, string | number[]> = {};
-		let errorMessage = [];
-
-		if (notFoundsIds.length > 0) {
-			errorMessage.push('Some shifts were not found');
-			error['notFoundsIds'] = notFoundsIds;
+	ids.forEach((id) => {
+		const shift = shifts.find((s) => s.id === id);
+		if (!shift) {
+			notFoundIds.push(id);
+		} else if (shift.status !== 'PENDING') {
+			skippedIds.push(id);
+		} else {
+			shift.status = status;
+			updatedShifts.push(shift);
 		}
-		if (skippedIds.length > 0) {
-			errorMessage.push(
+	});
+
+	let error = {};
+	if (notFoundIds.length > 0 || skippedIds.length > 0) {
+		const errorMessages = [];
+		if (notFoundIds.length > 0)
+			errorMessages.push('Some shifts were not found');
+		if (skippedIds.length > 0)
+			errorMessages.push(
 				'Some shifts were not updated due to their non-PENDING status'
 			);
-			error['skippedIds'] = skippedIds;
-		}
+		error = {
+			message: errorMessages.join(' & '),
+			notFoundIds,
+			skippedIds,
+		};
 
-		if (errorMessage.length > 0)
-			error['message'] = errorMessage.join(' & ');
-
-		// if no shifts are updated, and there are only errors return the error object with the correct error code
-		if (Object.keys(error).length > 0 && updatedShifts.length === 0) {
-			const statusCode = notFoundsIds.length === ids.length ? 404 : 409;
+		if (updatedShifts.length === 0) {
+			const statusCode = notFoundIds.length === ids.length ? 404 : 409;
 			return res.status(statusCode).json({ error });
 		}
-
-		// if there are shifts with some errors, then return the updated shifts along with the error object
-		if (Object.keys(error).length > 0) {
-			return res.json({ data: updatedShifts, error });
-		}
-
-		// if there are no errors, return the updated shifts
-		res.json({ data: updatedShifts });
 	}
-);
+
+	if (Object.keys(error).length > 0) res.json({ updatedShifts, error });
+	else res.json({ updatedShifts });
+});
 
 app.listen(5001, () => {
 	console.log('Server running on localhost:5001');

@@ -209,7 +209,9 @@ export const useShiftStore = create<State & Actions>()(
 				const response = await apiClient.confirmShifts(shiftIds);
 
 				// only update the shifts that were updated
-				const updatedShiftIds = response.data.map((shift) => shift.id);
+				const updatedShiftIds = response.updatedShifts.map(
+					(shift) => shift.id
+				);
 
 				set((state) => {
 					const idMap = state.shiftIdToMonthDayMap;
