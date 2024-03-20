@@ -17,7 +17,7 @@ export interface Shift {
 }
 
 type ShiftIdMap = Record<number, { monthKey: string; dayKey: string }>;
-export type GroupedShifts = Record<string, Record<string, Shift[]>>;
+type GroupedShifts = Record<string, Record<string, Shift[]>>;
 
 const groupShifts = (shifts: Shift[]) => {
 	const groupByMonthAndDay = shifts.reduce((acc, shift) => {

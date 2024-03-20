@@ -5,8 +5,7 @@ import useShifts from '../hooks/useShifts';
 
 const ShiftsView = () => {
 	const { data: shifts, isLoading, isError } = useShifts();
-	const setShifts = useShiftStore((state) => state.setShifts);
-	const { shiftsByMonthAndDay } = useShiftStore();
+	const { setShifts, shiftsByMonthAndDay } = useShiftStore();
 
 	useEffect(() => {
 		if (shifts) {

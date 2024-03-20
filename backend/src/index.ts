@@ -16,6 +16,7 @@ export interface Shift {
 
 type NoIdShifts = Omit<Shift, 'id'>[];
 
+// the current shifts.ts file does not contain shiftIds, and it's not sorted
 let shifts: Shift[] = (base_shifts as NoIdShifts)
 	.map((ss, index) => ({
 		...ss,
@@ -85,12 +86,16 @@ app.patch('/api/shifts', (req, res) => {
 	let skippedIds: number[] = [];
 
 	ids.forEach((id) => {
+		// updates shift status to confirmed or declined if pending
 		const shift = shifts.find((s) => s.id === id);
 		if (!shift) {
+			// shift does not exist
 			notFoundIds.push(id);
 		} else if (shift.status !== 'PENDING') {
+			// shift status is not pending
 			skippedIds.push(id);
 		} else {
+			// shift exists and status is pending
 			shift.status = status;
 			updatedShifts.push(shift);
 		}

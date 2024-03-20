@@ -1,5 +1,7 @@
+import { Shift } from '../store';
+
 type ButtonType = 'CONFIRM' | 'DECLINE' | 'ALL';
-type StatusType = 'CONFIRMED' | 'PENDING' | 'DECLINED';
+type StatusType = Shift['status'];
 
 interface Props {
 	onClick: () => void;

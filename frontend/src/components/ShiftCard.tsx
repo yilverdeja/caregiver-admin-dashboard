@@ -9,7 +9,7 @@ import ShiftRelease from './ShiftRelease';
 
 interface Props {
 	shift: Shift;
-	onUpdateStatus: (status: 'DECLINED' | 'CONFIRMED' | 'PENDING') => void;
+	onUpdateStatus: (status: Shift['status']) => void;
 }
 
 const ShiftCard = ({ shift, onUpdateStatus }: Props) => {

@@ -23,6 +23,7 @@ const getReleaseText = (hours: number, minutes: number) => {
 };
 
 const ShiftRelease = ({ start }: Props) => {
+	// TODO: remove hardcoded date in production
 	const now = new Date('March 19 2023 13:01');
 	const startDate = new Date(start);
 	const difference = startDate.getTime() - now.getTime();

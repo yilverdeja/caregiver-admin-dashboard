@@ -94,12 +94,6 @@ npm run dev
 
 This will start a web server on an availale port
 
-## Layout
-
-### Backend
-
-### Frontend
-
 ## Known Issues
 
 ### Hardcoded Shift Release Component
@@ -115,6 +109,16 @@ const now = new Date('March 19 2023 13:01');
 ### Horizontal Scrolling with 3 Months
 
 Ideally, horizontal scrolling would only appear on the desktop view if there were more than 3 shift month views. However, even with only 3 shift month views available, there is still a bit of horizontal scrolling.
+
+## Codebase Improvements
+
+### Types
+
+Various of the same types are used across the components. The main `Shift` type is defined in `store.ts` file, but the type definitions are defined all over the place and would be better to define it in one place
+
+### Component Organization
+
+Organize the components by the type of component they serve, i.e. `Shift` components, or `UI` for the custom button and checkbox components.
 
 ## Future Improvements
 

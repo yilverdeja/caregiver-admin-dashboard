@@ -11,8 +11,8 @@ function ShiftsDayView({ monthKey, dayKey }: Props) {
 	const { filteredShiftsByMonthAndDay, updateShiftStatus } = useShiftStore();
 	const shifts = filteredShiftsByMonthAndDay[monthKey][dayKey];
 
+	// handle scenario where there are no shifts for the given day
 	if (!shifts || shifts.length === 0) {
-		// Handle scenario where there are no shifts for the given day
 		return null;
 	}
 

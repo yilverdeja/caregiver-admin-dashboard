@@ -4,7 +4,7 @@ interface Props {
 	roundTo5Mins?: boolean;
 }
 
-// converts the date string to a
+// converts the date string to a readable time format
 const dateToString = (dt: string, roundTo5Mins: boolean) => {
 	const dtDate = new Date(dt);
 	if (roundTo5Mins) {
