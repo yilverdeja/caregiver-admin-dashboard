@@ -95,7 +95,7 @@ const ShiftsMonthView = ({ monthKey }: Props) => {
 										(id) => selectedShifts[parseInt(id)]
 									)
 									.map((id) => parseInt(id))
-							);
+							).then(() => setAllChecked(false));
 						}}
 						disabled={selectedCount === 0}
 					/>
