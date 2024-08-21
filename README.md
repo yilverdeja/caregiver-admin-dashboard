@@ -15,34 +15,34 @@ This is a mock admin panel for admins to approve or decline caregiver shifts. Th
 
 #### Shift Listing
 
--   Displays all the shifts and groups them by their month and date
--   Supports horizontal scrolling if there are more than 3 months
+- Displays all the shifts and groups them by their month and date
+- Supports horizontal scrolling if there are more than 3 months
 
 #### Shift Management
 
--   Admins can decline or confirm shifts only if the status is PENDING. Therefore, once a shift is DECLINED or CONFIRMED, it cannot be changed again
--   Supports multiple selection for confirming multiple shifts
+- Admins can decline or confirm shifts only if the status is PENDING. Therefore, once a shift is DECLINED or CONFIRMED, it cannot be changed again
+- Supports multiple selection for confirming multiple shifts
 
 #### Shift Search
 
--   Searching by a caregivers name will display only the shifts that match that caregivers name
--   Search is performed immediately when the name is typed
--   Search bar is located at the top and remains at the position even when the shifts view is scrolling
+- Searching by a caregivers name will display only the shifts that match that caregivers name
+- Search is performed immediately when the name is typed
+- Search bar is located at the top and remains at the position even when the shifts view is scrolling
 
 ### Built With
 
 #### Frontend
 
--   Typescript
--   React
--   Zustand: State Management
--   TailwindCSS: UI
+- Typescript
+- React
+- Zustand: State Management
+- TailwindCSS: UI
 
 #### Backend
 
--   Typescript
--   Node
--   Express
+- Typescript
+- Node
+- Express
 
 ## Getting Started
 
@@ -55,7 +55,7 @@ This project has only been tested on Node Version `20.11.0`. Please consider usi
 On the root folder, install all the NPM packages with the following command.
 
 ```sh
-npm run install
+npm run setup
 ```
 
 This will install the NPM packages on the root directory, the frontend directory and the backend directory.
@@ -69,7 +69,7 @@ After installing the NPM packages, to run a local
 In the project directory, you can run both the server and client concurrently using:
 
 ```sh
-npm start
+npm run start
 ```
 
 This will start a node server on port `5001`, and a web server on an availale port.
@@ -79,7 +79,7 @@ This will start a node server on port `5001`, and a web server on an availale po
 In the backend directory, run the node server using:
 
 ```sh
-npm start
+npm run server
 ```
 
 This will start a node server on port `5001`
@@ -105,7 +105,7 @@ The shift data is based in 2023, whereas the year of developing this application
 For development purposes, the current date was hardcoded in the `ShiftRelease.tsx` Component to March 19th at 1:01PM in the following line:
 
 ```tsx
-const now = new Date('March 19 2023 13:01');
+const now = new Date("March 19 2023 13:01");
 ```
 
 ### Horizontal Scrolling with 3 Months
