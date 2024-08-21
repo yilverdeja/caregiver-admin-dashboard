@@ -45,10 +45,11 @@ export async function PATCH(request: Request) {
 
     if (updatedShifts.length === 0) {
       const statusCode = notFoundIds.length === ids.length ? 404 : 409;
-      return res.status(statusCode).json({ error });
+      return Response.json({ error }, { status: statusCode });
     }
   }
 
-  if (Object.keys(error).length > 0) res.json({ updatedShifts, error });
-  else res.json({ updatedShifts });
+  if (Object.keys(error).length > 0)
+    return Response.json({ updatedShifts, error });
+  else return Response.json({ updatedShifts });
 }
