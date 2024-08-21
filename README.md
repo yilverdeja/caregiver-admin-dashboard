@@ -1,4 +1,40 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Admin Dashboard
+
+<img src="https://github.com/yilverdeja/caregiver-admin-dashboard/assets/29952939/ab9b6e5f-5f28-461e-856b-d9a9651cd6a3" alt="desktop-showcase" width="auto" height="300">
+<img src="https://github.com/yilverdeja/caregiver-admin-dashboard/assets/29952939/29b52ebb-153e-476b-bf6d-2538d43eeace" alt="desktop-showcase" width="auto" height="300">
+
+## About
+
+This is a mock admin panel for admins to approve or decline caregiver shifts. The major features are:
+
+1. Shift Listing
+2. Shift Management
+3. Shift Search by Caregiver
+
+### Specifications
+
+#### Shift Listing
+
+- Displays all the shifts and groups them by their month and date
+- Supports horizontal scrolling if there are more than 3 months
+
+#### Shift Management
+
+- Admins can decline or confirm shifts only if the status is PENDING. Therefore, once a shift is DECLINED or CONFIRMED, it cannot be changed again
+- Supports multiple selection for confirming multiple shifts
+
+#### Shift Search
+
+- Searching by a caregivers name will display only the shifts that match that caregivers name
+- Search is performed immediately when the name is typed
+- Search bar is located at the top and remains at the position even when the shifts view is scrolling
+
+### Built With
+
+- Typescript
+- Next.js & React.js
+- Zustand: State Management
+- TailwindCSS: UI
 
 ## Getting Started
 
@@ -16,21 +52,50 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Known Issues
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### Hardcoded Shift Release Component
 
-## Learn More
+![image](https://github.com/yilverdeja/caregiver-admin-dashboard/assets/29952939/d776435e-bfb9-4b01-bc5b-8034a1195fe6)
 
-To learn more about Next.js, take a look at the following resources:
+The shift data is based in 2023, whereas the year of developing this application is in 2024. The `ShiftRelease` component will only appear when the shift status is PENDING and there are less than 24 hours until the shift starts.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+For development purposes, the current date was hardcoded in the `ShiftRelease.tsx` Component to March 19th at 1:01PM in the following line:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+```tsx
+const now = new Date("March 19 2023 13:01");
+```
 
-## Deploy on Vercel
+### Horizontal Scrolling with 3 Months
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Ideally, horizontal scrolling would only appear on the desktop view if there were more than 3 shift month views. However, even with only 3 shift month views available, there is still a bit of horizontal scrolling.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Codebase Improvements
+
+### Types
+
+Various of the same types are used across the components. The main `Shift` type is defined in `store.ts` file, but the type definitions are defined all over the place and would be better to define it in one place
+
+### Component Organization
+
+Organize the components by the type of component they serve, i.e. `Shift` components, or `UI` for the custom button and checkbox components.
+
+## Future Improvements
+
+### Confirmation / Alert Modal
+
+To better the user experience, it would be great to add a confirmation dialog to show the user all the shifts that were confirmed after selecting "Confirm" for all the selected shifts.
+
+In addition, if there are any errors during updates, it would also be good to add an alert to show the admins why the update status function did not work.
+
+### Filter by Pending (or Status Type)
+
+Admins can view all the shifts, however, they can only change the statuses of shifts that are PENDING. Therefore, adding a filter to only retrieve shifts with a PENDING status will help clean up the view if necessary.
+
+In addition, a filter by other statuses like "CONFIRMED" or "DECLINED" can be good too and give more control to the admins.
+
+### Scroll Suggestion
+
+On tablets and desktops, a scroll suggestion should be added to show that the content can be scrolled horizontally or vertically to show more information.
+
+The only way the user can know to scroll in this current application is by seeing the scrollbars, or by noticing the cut off views and playing with the screen.
