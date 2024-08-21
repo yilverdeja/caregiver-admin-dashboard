@@ -31,68 +31,26 @@ This is a mock admin panel for admins to approve or decline caregiver shifts. Th
 
 ### Built With
 
-#### Frontend
-
 - Typescript
-- React
+- Next.js & React.js
 - Zustand: State Management
 - TailwindCSS: UI
 
-#### Backend
-
-- Typescript
-- Node
-- Express
-
 ## Getting Started
 
-### Note
+First, run the development server:
 
-This project has only been tested on Node Version `20.11.0`. Please consider using Node Version `20.11.0` if it doesn't work on previous versions.
-
-### Installation
-
-On the root folder, install all the NPM packages with the following command.
-
-```sh
-npm run setup
-```
-
-This will install the NPM packages on the root directory, the frontend directory and the backend directory.
-
-## Scripts
-
-After installing the NPM packages, to run a local
-
-### Server + Client
-
-In the project directory, you can run both the server and client concurrently using:
-
-```sh
-npm run start
-```
-
-This will start a node server on port `5001`, and a web server on an availale port.
-
-### Server
-
-In the backend directory, run the node server using:
-
-```sh
-npm run server
-```
-
-This will start a node server on port `5001`
-
-### Client
-
-In the frontend directory, run the web server using:
-
-```sh
+```bash
 npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
 ```
 
-This will start a web server on an availale port
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 ## Known Issues
 
