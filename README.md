@@ -38,7 +38,19 @@ This is a mock admin panel for admins to approve or decline caregiver shifts. Th
 
 ## Getting Started
 
-First, run the development server:
+### Pulling the Docker Image
+
+To quickly start the application without building the Docker image locally, you can use the following command. This will check for the image locally, pull it from Docker Hub if it's not found, and then run the image, mapping port 3000 of the container to port 3000 on the host:
+
+```bash
+docker run -p 3000:3000 yilverdeja/caregiver-admin-dashboard
+```
+
+After running the command, open [http://localhost:3000](http://localhost:3000) with your browser to view the application.
+
+### Development
+
+To set up a local development environment, first, ensure you have Node.js and your preferred package manager installed (npm, yarn, pnpm, or bun). Then, run the development server with one of the following commands, depending on your package manager:
 
 ```bash
 npm run dev
@@ -50,7 +62,9 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Each command will start the development server, typically with hot reloading enabled, allowing you to see any changes you make by simply refreshing your browser.
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to view the application in development mode.
 
 ## Known Issues
 
